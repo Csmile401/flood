@@ -1,0 +1,216 @@
+/* === Base Layout === */
+body {
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 40px 20px;
+    background: linear-gradient(to right, #e0f7fa, #ffffff);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    animation: fadeIn 1s ease-in;
+  }
+  
+  /* === Container Card === */
+  .container {
+    background: #ffffff;
+    width: 100%;
+    max-width: 700px;
+    border-radius: 12px;
+    padding: 40px 30px;
+    margin: 40px auto;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    transition: transform 0.3s ease;
+  }
+  
+  .title {
+    text-align: center;
+    margin-bottom: 25px;
+    color: #0077b6;
+    animation: fadeInUp 1s ease-in-out;
+  }
+  
+  /* === Form Elements === */
+  form {
+    text-align: center;
+    margin-bottom: 30px;
+  }
+  
+  select, button, input, textarea {
+    padding: 10px 14px;
+    font-size: 16px;
+    margin-top: 10px;
+    margin-right: 10px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  
+  button {
+    background-color: #0077b6;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+  }
+  
+  button:hover {
+    background-color: #005f86;
+    transform: scale(1.05);
+  }
+  
+  /* === Result Block === */
+  .result {
+    margin-top: 20px;
+    padding: 20px;
+    background-color: #f0faff;
+    border-left: 5px solid #00b4d8;
+    border-radius: 8px;
+    animation: slideIn 0.7s ease;
+  }
+  
+  /* === Risk Colors === */
+  .flood-risk {
+    margin-top: 15px;
+    font-weight: bold;
+    font-size: 18px;
+  }
+  
+  .flood-risk span {
+    padding: 5px 10px;
+    border-radius: 6px;
+    font-weight: bold;
+  }
+  
+  .flood-risk .safe {
+    background-color: #d4edda;
+    color: #155724;
+  }
+  
+  .flood-risk .alert {
+    background-color: #fff3cd;
+    color: #856404;
+  }
+  
+  .flood-risk .danger {
+    background-color: #f8d7da;
+    color: #721c24;
+  }
+  
+  /* === Map & Charts === */
+  #map {
+    height: 350px;
+    margin-top: 30px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+  
+  canvas {
+    margin-top: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* === Error Message === */
+  #error, .error {
+    margin-top: 20px;
+    color: red;
+  }
+  
+  /* === Topbar Navigation === */
+  .topbar {
+    background-color: #0077b6;
+    color: white;
+    padding: 12px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: bold;
+    position: sticky;
+    top: 0;
+    z-index: 999;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .topbar-left {
+    font-size: 20px;
+  }
+  
+  .topbar-links {
+    display: flex;
+    gap: 20px;
+  }
+  
+  .topbar-links a {
+    color: white !important;
+    text-decoration: none;
+    font-size: 16px;
+    transition: color 0.3s ease;
+  }
+  
+  .topbar-links a:hover {
+    text-decoration: underline;
+    color: #90e0ef;
+  }
+  
+  .topbar-links a.active {
+    background-color: #023e8a;
+    padding: 8px 14px;
+    border-radius: 6px;
+  }
+  
+  /* === Animations === */
+  .fade-in {
+    animation: fadeIn 1s ease-in;
+  }
+  
+  .fade-in-up {
+    animation: fadeInUp 1s ease-in-out;
+  }
+  
+  .slide-in {
+    animation: slideIn 0.8s ease-in-out;
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+  
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  
+  @keyframes slideIn {
+    from { opacity: 0; transform: translateX(-30px); }
+    to   { opacity: 1; transform: translateX(0); }
+  }
+  
+  /* === Responsive Design === */
+  @media screen and (max-width: 600px) {
+    .container {
+      padding: 20px;
+    }
+  
+    select, button, input, textarea {
+      width: 100%;
+      margin: 8px 0;
+    }
+  
+    .topbar {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  
+    .topbar-links {
+      margin-top: 10px;
+      flex-direction: column;
+    }
+  
+    .topbar-links a {
+      margin: 6px 0;
+    }
+  }
+  

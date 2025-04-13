@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Evacuation Plan</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- ✅ Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- ✅ Custom CSS -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body class="bg-light">
+
+    <nav class="topbar">
+        <div class="topbar-left">🌦️ FloodAware</div>
+        <div class="topbar-links">
+          <a href="/">Home</a>
+          <a href="/evacuation-plan">Evacuation Plan</a>
+          <a href="/volunteer">Volunteer / Request Aid</a>
+          <a href="/ask">Ask FloodBot</a>
+        </div>
+      </nav>      
+
+  <!-- ✅ Main Container -->
+  <div class="container my-5 p-4 bg-white rounded-4 shadow">
+    <h1 class="text-center text-primary mb-4">🚨 Community Evacuation Plan</h1>
+
+    <div class="mb-4">
+      <h4 class="text-dark">1️⃣ Monitor Alerts</h4>
+      <p class="text-muted ms-3">Stay tuned to government updates via radio, social media, and official alerts.</p>
+    </div>
+
+    <div class="mb-4">
+      <h4 class="text-dark">2️⃣ Prepare Essentials</h4>
+      <p class="text-muted ms-3">Pack water, food, ID, medical supplies, flashlight, batteries, and important documents.</p>
+    </div>
+
+    <div class="mb-4">
+      <h4 class="text-dark">3️⃣ Move to Designated Shelters</h4>
+      <p class="text-muted ms-3">Head to the nearest shelter such as a school, hall, or stadium listed in your district plan.</p>
+    </div>
+
+    <div class="mb-4">
+      <h4 class="text-dark">4️⃣ Assist Vulnerable Groups</h4>
+      <p class="text-muted ms-3">Help elderly, disabled, children, and pregnant women in your area.</p>
+    </div>
+
+    <div class="mb-4">
+      <h4 class="text-dark">5️⃣ Do Not Return Immediately</h4>
+      <p class="text-muted ms-3">Wait for the "All Clear" notice before returning to your home.</p>
+    </div>
+
+    <div class="text-center mt-5">
+      <a href="{{ url_for('static', filename='pdf/evacuation_plan_sample.pdf') }}" class="btn btn-primary px-4 py-2 fw-bold" download>
+        📄 Download PDF Version
+      </a>
+    </div>
+  </div>
+
+  <!-- ✅ Bootstrap JS Bundle -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
