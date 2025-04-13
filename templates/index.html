@@ -79,11 +79,11 @@
   </div>
 
   <div class="container">
-    <h2>📡 实时洪水预警系统</h2>
+    <h2>📡 Sistem amaran banjir masa nyata</h2>
 
     <div class="row mb-3">
       <div class="col-md-6">
-        <label><strong>选择地区</strong></label>
+        <label><strong>Pilih lokasi anda</strong></label>
         <select id="daerah" class="form-select">
           <option>ALL</option>
           <option>Bintulu</option>
@@ -101,7 +101,7 @@
         </select>
       </div>
       <div class="col-md-6 d-flex align-items-end">
-        <button class="btn btn-success" onclick="showWarningsByArea()">查看当前地区预警</button>
+        <button class="btn btn-success" onclick="showWarningsByArea()">Lihat amaran serantau semasa</button>
       </div>
     </div>
 
@@ -151,7 +151,7 @@
     function showWarningsByArea() {
       const selectedDaerah = document.getElementById("daerah").value.toLowerCase();
       if (!selectedDaerah || selectedDaerah === "all") {
-        alert("⚠️ 请先选择一个具体的地区！");
+        alert("⚠️ Sila pilih kawasan tertentu dahulu!");
         return;
       }
 
@@ -171,7 +171,7 @@
         const lembangan = lembanganCell.textContent.trim();
 
         if (daerah === selectedDaerah && (keadaan.toLowerCase().includes("bahaya") || keadaan.toLowerCase().includes("amaran") || keadaan.toLowerCase().includes("waspada"))) {
-          alerts.push(`⚠️ ${lembangan} 出现 ${keadaan.toUpperCase()} 状态`);
+          alerts.push(`⚠️ ${lembangan} Muncul ${keadaan.toUpperCase()} Keadaan：`);
           keadaanList.push(`${lembangan}: ${keadaan}`);
         }
       });
@@ -187,15 +187,15 @@
         })
         .then(response => response.json())
         .then(data => {
-          alert("📢 Flood Alert:\\n\\n" + userMessage + "\\n\\n💡 AI Suggestion:\\n" + data.answer);
+          alert("📢 Flood Alert:\n\n" + userMessage + "\n\n💡 AI Suggestion:\n" + data.answer);
         })
         .catch(err => {
-          alert(userMessage + "\\n\\n❌ Failed to get AI suggestion.");
+          alert(userMessage + "\n\n❌ Failed to get AI suggestion.");
           console.error(err);
         });
 
       } else {
-        alert("✅ 当前所选地区没有预警信息");
+        alert("✅There is no warning information for the currently selected area");
       }
     }
 
