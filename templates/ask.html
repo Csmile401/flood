@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>💬 Ask FloodBot</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(to right, #dbeafe, #eff6ff);
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 800px;
+      width: 100%;
+      margin-top: 60px;
+      background: #ffffff;
+      padding: 30px 40px;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+    }
+
+    h1 {
+      color: #1e3a8a;
+      margin-bottom: 20px;
+    }
+
+    form {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    input[type="text"] {
+      flex: 1;
+      min-width: 300px;
+      padding: 12px 16px;
+      font-size: 16px;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      outline: none;
+      transition: border-color 0.2s ease-in-out;
+    }
+
+    input[type="text"]:focus {
+      border-color: #0077b6;
+    }
+
+    button {
+      background-color: #0077b6;
+      color: white;
+      padding: 12px 20px;
+      font-size: 16px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.2s ease-in-out;
+    }
+
+    button:hover {
+      background-color: #005f8a;
+    }
+
+    .response {
+      margin-top: 30px;
+      background-color: #f9fafb;
+      padding: 25px;
+      border-radius: 12px;
+      font-size: 16px;
+      color: #111827;
+      line-height: 1.6;
+      text-align: left;
+      white-space: pre-wrap;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
+
+    .answer-title {
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 12px;
+      color: #1e40af;
+    }
+
+    @media (max-width: 640px) {
+      .container {
+        padding: 20px;
+      }
+
+      input[type="text"] {
+        width: 100%;
+      }
+
+      button {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>💬 Ask FloodBot</h1>
+    <form method="POST">
+      <input type="text" name="question" value="{{ question }}" placeholder="Ask me about flood data..." required>
+      <button type="submit">Ask</button>
+    </form>
+
+    {% if answer %}
+      <div class="response">
+        <div class="answer-title">🧠 Answer:</div>
+        <p>{{ answer }}</p>
+      </div>
+    {% elif question %}
+      <div class="response">
+        <p><em>Sorry, I couldn't find a good answer. Try asking something else.</em></p>
+      </div>
+    {% endif %}
+  </div>
+</body>
+</html>

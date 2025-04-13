@@ -26,7 +26,6 @@
       align-items: center;
       gap: 0.5rem;
       margin-bottom: 2rem;
-      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.05);
     }
     .form-select, .btn {
       border-radius: 8px;
@@ -61,9 +60,11 @@
       background: #3b82f6;
       color: #ffffff;
       padding: 1rem;
+      text-align: center;
     }
     table td {
       padding: 1rem;
+      text-align: center;
       border-bottom: 1px solid #e5e7eb;
     }
     table tr:hover {
@@ -72,6 +73,11 @@
   </style>
 </head>
 <body>
+  <!-- 顶部导航栏 -->
+  <div class="d-flex justify-content-end px-4 py-3">
+    <a href="/ask" class="btn btn-primary">💬 向 FloodBot 提问</a>
+  </div>
+
   <div class="container">
     <h2>📡 实时洪水预警系统</h2>
 
@@ -142,54 +148,67 @@
   </div>
 
   <script>
-    // 当下拉菜单变动时，立即筛选地区
-    document.getElementById("daerah").addEventListener("change", function () {
-      const selectedDaerah = this.value.toLowerCase();
-      const tableRows = document.querySelectorAll("table tbody tr");
-  
-      tableRows.forEach(row => {
-        const daerahCell = row.cells[3]; // 第 4 列是 Daerah
-        if (!daerahCell) return;
-  
-        const rowDaerah = daerahCell.textContent.trim().toLowerCase();
-        // 若选 "ALL"，显示所有；否则只显示匹配地区
-        row.style.display = (selectedDaerah === "all" || rowDaerah === selectedDaerah) ? "" : "none";
-      });
-    });
-  
-    // “查看当前地区预警” 按钮功能（保留）
     function showWarningsByArea() {
       const selectedDaerah = document.getElementById("daerah").value.toLowerCase();
       if (!selectedDaerah || selectedDaerah === "all") {
         alert("⚠️ 请先选择一个具体的地区！");
         return;
       }
-  
+
       const tableRows = document.querySelectorAll("table tbody tr");
       const alerts = [];
-  
+      const keadaanList = [];
+
       tableRows.forEach(row => {
         const daerahCell = row.cells[3];
         const lembanganCell = row.cells[4];
-        const keadaanCell = row.cells[12]; // 第 13 列
-  
+        const keadaanCell = row.cells[12];
+
         if (!daerahCell || !keadaanCell || !lembanganCell) return;
-  
+
         const daerah = daerahCell.textContent.trim().toLowerCase();
-        const keadaan = keadaanCell.textContent.trim().toLowerCase();
+        const keadaan = keadaanCell.textContent.trim();
         const lembangan = lembanganCell.textContent.trim();
-  
-        if (daerah === selectedDaerah && (keadaan.includes("bahaya") || keadaan.includes("amaran") || keadaan.includes("waspada"))) {
+
+        if (daerah === selectedDaerah && (keadaan.toLowerCase().includes("bahaya") || keadaan.toLowerCase().includes("amaran") || keadaan.toLowerCase().includes("waspada"))) {
           alerts.push(`⚠️ ${lembangan} 出现 ${keadaan.toUpperCase()} 状态`);
+          keadaanList.push(`${lembangan}: ${keadaan}`);
         }
       });
-  
+
       if (alerts.length > 0) {
-        alert(alerts.join("\n"));
+        const userMessage = alerts.join("\\n");
+        const question = `Here are the flood alerts:\\n${keadaanList.join(", ")}\\nWhat should the residents in these areas do?`;
+
+        fetch('/ask-ai', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ question: question })
+        })
+        .then(response => response.json())
+        .then(data => {
+          alert("📢 Flood Alert:\\n\\n" + userMessage + "\\n\\n💡 AI Suggestion:\\n" + data.answer);
+        })
+        .catch(err => {
+          alert(userMessage + "\\n\\n❌ Failed to get AI suggestion.");
+          console.error(err);
+        });
+
       } else {
         alert("✅ 当前所选地区没有预警信息");
       }
     }
+
+    document.getElementById("daerah").addEventListener("change", function () {
+      const selectedDaerah = this.value.toLowerCase();
+      const tableRows = document.querySelectorAll("table tbody tr");
+      tableRows.forEach(row => {
+        const daerahCell = row.cells[3];
+        if (!daerahCell) return;
+        const rowDaerah = daerahCell.textContent.trim().toLowerCase();
+        row.style.display = (selectedDaerah === "all" || rowDaerah === selectedDaerah) ? "" : "none";
+      });
+    });
   </script>
 </body>
 </html>
