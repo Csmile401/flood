@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <title>Real-time flood warning</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      padding: 2rem;
+      background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+      font-family: 'Segoe UI', Arial, sans-serif;
+      color: #1e3a8a;
+    }
+    .container {
+      background: #ffffff;
+      border-radius: 15px;
+      padding: 2rem;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+      max-width: 1200px;
+      margin: auto;
+    }
+    h2 {
+      font-weight: 600;
+      color: #1e40af;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 2rem;
+      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.05);
+    }
+    .form-select, .btn {
+      border-radius: 8px;
+      transition: all 0.3s ease;
+    }
+    .form-select {
+      border: 1px solid #93c5fd;
+      background: #f8fafc;
+      padding: 0.75rem;
+      font-size: 1rem;
+    }
+    .form-select:focus {
+      border-color: #2563eb;
+      box-shadow: 0 0 0 0.2rem rgba(37, 99, 235, 0.25);
+    }
+    .btn-success {
+      background: #15803d;
+      border: none;
+      padding: 0.75rem 1.5rem;
+      font-weight: 500;
+    }
+    .btn-success:hover {
+      background: #166534;
+      transform: translateY(-2px);
+    }
+    .table-responsive {
+      margin-top: 1.5rem;
+      border-radius: 10px;
+      overflow: auto;
+    }
+    table th {
+      background: #3b82f6;
+      color: #ffffff;
+      padding: 1rem;
+    }
+    table td {
+      padding: 1rem;
+      border-bottom: 1px solid #e5e7eb;
+    }
+    table tr:hover {
+      background: #e0f2fe;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>📡 实时洪水预警系统</h2>
+
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <label><strong>选择地区</strong></label>
+        <select id="daerah" class="form-select">
+          <option>ALL</option>
+          <option>Bintulu</option>
+          <option>Miri</option>
+          <option>Kuching</option>
+          <option>Limbang</option>
+          <option>Samarahan</option>
+          <option>Serian</option>
+          <option>Sri Aman</option>
+          <option>Betong</option>
+          <option>Kapit</option>
+          <option>Sarikei</option>
+          <option>Sibu</option>
+          <option>Mukah</option>
+        </select>
+      </div>
+      <div class="col-md-6 d-flex align-items-end">
+        <button class="btn btn-success" onclick="showWarningsByArea()">查看当前地区预警</button>
+      </div>
+    </div>
+
+    <div class="table-responsive">
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>No</th>
+            <th>ID Stesen</th>
+            <th>Nama Stesen</th>
+            <th>Daerah</th>
+            <th>Lembangan</th>
+            <th>Sub Lembangan</th>
+            <th>Kemaskini Terakhir</th>
+            <th>Aras Air (m)</th>
+            <th>Normal</th>
+            <th>Waspada</th>
+            <th>Amaran</th>
+            <th>Bahaya</th>
+            <th>Keadaan</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for row in data %}
+          <tr>
+            <td>{{ loop.index }}</td>
+            <td>{{ row["ID Stesen"] }}</td>
+            <td>{{ row["Nama Stesen"] }}</td>
+            <td>{{ row["Daerah"] }}</td>
+            <td>{{ row["Lembangan"] }}</td>
+            <td>{{ row["Sub Lembangan"] }}</td>
+            <td>{{ row["Kemaskini Terakhir"] }}</td>
+            <td>{{ row["Aras Air (m) (Graf)"] }}</td>
+            <td>{{ row["Normal"] }}</td>
+            <td>{{ row["Waspada"] }}</td>
+            <td>{{ row["Amaran"] }}</td>
+            <td>{{ row["Bahaya"] }}</td>
+            <td>{{ row["Keadaan"] }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <script>
+    // 当下拉菜单变动时，立即筛选地区
+    document.getElementById("daerah").addEventListener("change", function () {
+      const selectedDaerah = this.value.toLowerCase();
+      const tableRows = document.querySelectorAll("table tbody tr");
+  
+      tableRows.forEach(row => {
+        const daerahCell = row.cells[3]; // 第 4 列是 Daerah
+        if (!daerahCell) return;
+  
+        const rowDaerah = daerahCell.textContent.trim().toLowerCase();
+        // 若选 "ALL"，显示所有；否则只显示匹配地区
+        row.style.display = (selectedDaerah === "all" || rowDaerah === selectedDaerah) ? "" : "none";
+      });
+    });
+  
+    // “查看当前地区预警” 按钮功能（保留）
+    function showWarningsByArea() {
+      const selectedDaerah = document.getElementById("daerah").value.toLowerCase();
+      if (!selectedDaerah || selectedDaerah === "all") {
+        alert("⚠️ 请先选择一个具体的地区！");
+        return;
+      }
+  
+      const tableRows = document.querySelectorAll("table tbody tr");
+      const alerts = [];
+  
+      tableRows.forEach(row => {
+        const daerahCell = row.cells[3];
+        const lembanganCell = row.cells[4];
+        const keadaanCell = row.cells[12]; // 第 13 列
+  
+        if (!daerahCell || !keadaanCell || !lembanganCell) return;
+  
+        const daerah = daerahCell.textContent.trim().toLowerCase();
+        const keadaan = keadaanCell.textContent.trim().toLowerCase();
+        const lembangan = lembanganCell.textContent.trim();
+  
+        if (daerah === selectedDaerah && (keadaan.includes("bahaya") || keadaan.includes("amaran") || keadaan.includes("waspada"))) {
+          alerts.push(`⚠️ ${lembangan} 出现 ${keadaan.toUpperCase()} 状态`);
+        }
+      });
+  
+      if (alerts.length > 0) {
+        alert(alerts.join("\n"));
+      } else {
+        alert("✅ 当前所选地区没有预警信息");
+      }
+    }
+  </script>
+</body>
+</html>
